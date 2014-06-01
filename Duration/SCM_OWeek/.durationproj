@@ -1,0 +1,42 @@
+<tracks>
+    <page>
+        <name>Page One</name>
+        <track>
+            <type>Audio</type>
+            <xmlFileName></xmlFileName>
+            <trackName>audio</trackName>
+            <displayName>audio</displayName>
+            <sendOSC>1</sendOSC>
+            <receiveOSC>0</receiveOSC>
+            <clip></clip>
+        </track>
+        <track>
+            <type>Colors</type>
+            <xmlFileName>colors_.xml</xmlFileName>
+            <trackName>colors</trackName>
+            <displayName>colors</displayName>
+            <sendOSC>1</sendOSC>
+            <receiveOSC>0</receiveOSC>
+            <palette>GUI/defaultColorPalette.png</palette>
+        </track>
+    </page>
+</tracks>
+<timelineSettings>
+    <duration>00:00:30:000</duration>
+    <playhead>00:00:24:377</playhead>
+    <inpoint>00:00:00:000</inpoint>
+    <outpoint>00:00:30:000</outpoint>
+    <loop>1</loop>
+</timelineSettings>
+<projectSettings>
+    <useBPM>0</useBPM>
+    <bpm>120.000000000</bpm>
+    <snapToBPM>1</snapToBPM>
+    <snapToKeys>1</snapToKeys>
+    <oscInEnabled>1</oscInEnabled>
+    <oscOutEnabled>1</oscOutEnabled>
+    <oscInPort>12346</oscInPort>
+    <oscIP>localhost</oscIP>
+    <oscOutPort>12345</oscOutPort>
+    <oscRate>30.000000000</oscRate>
+</projectSettings>
