@@ -23,7 +23,7 @@
 </tracks>
 <timelineSettings>
     <duration>00:00:30:000</duration>
-    <playhead>00:00:24:377</playhead>
+    <playhead>00:00:06:603</playhead>
     <inpoint>00:00:00:000</inpoint>
     <outpoint>00:00:30:000</outpoint>
     <loop>1</loop>
@@ -32,7 +32,7 @@
     <useBPM>0</useBPM>
     <bpm>120.000000000</bpm>
     <snapToBPM>1</snapToBPM>
-    <snapToKeys>1</snapToKeys>
+    <snapToKeys>0</snapToKeys>
     <oscInEnabled>1</oscInEnabled>
     <oscOutEnabled>1</oscOutEnabled>
     <oscInPort>12346</oscInPort>
