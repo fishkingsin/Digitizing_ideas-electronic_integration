@@ -46,6 +46,10 @@ void setup() {
 
 void draw() {
   background(0);
+    if ( myPort.available() > 0) {  // If data is available,
+   char val = (char)myPort.read();         // read it and store it in val
+    print(val);
+  }
   for(int i = 0 ; i < kNumChannel ; i++)
   {
     fill((int)channels[i][0],(int)channels[i][1],(int)channels[i][2]);

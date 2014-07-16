@@ -92,12 +92,12 @@ void loop() {
       Driver.SetColor(receivedMessage[3], receivedMessage[4], receivedMessage[5]);
       Driver.end();
       
-//      Serial.print("OK");
-//      Serial.write(byte(10));
+      Serial.print("OK");
+      Serial.write(byte(10));
       
     } else {
       
-//      Serial.print("FAIL");
+      Serial.print("FAIL");
 //      Serial.write(byte(10));
     }
     
