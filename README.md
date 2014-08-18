@@ -1,9 +1,12 @@
 Digitizing ideas - electronic integration
 ===============
 
-Installation
+Introduction
 ===============
 
+
+Installation
+===============
 * Install Duration
 * Install Processing
 * Install Arduino
@@ -11,3 +14,28 @@ Installation
 * wiring up
 * run processing project
 * run duration project
+
+Duration 
+===============
+http://www.duration.cc/
+
+Processing 
+===============
+http://processing.org/
+
+Arduino 
+===============
+http://arduino.cc/en/Main/Software
+
+
+Wiring 
+===============
+http://www.seeedstudio.com/wiki/Grove_-_LED_Strip_Driver
+
+
+
+Processing Project 
+===============
+
+Duration Project 
+===============
