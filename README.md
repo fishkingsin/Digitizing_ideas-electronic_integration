@@ -6,19 +6,19 @@ Introduction
 SCM 2014 OWeek Workshop
 This repo is simple demostarte a concept of digital media and electronic integration 
 
-1. Duration is a timeline for creative coding. Create live performances, interactive installations, and music visualizations by synchronously composing servos, lighting, and projection. [duration.cc](http://www.duration.cc/). This time Duration help you to plan your color changes.
-2. Processing is a programming language, development environment, and online community. Java base. This time processing helps you to transform data to controller broad.
-3. Arduino is an open-source electronics platform based on easy-to-use hardware and software. It's intended for anyone making interactive projects. This time arduino helps you control LED Strip.
+* Duration is a timeline for creative coding. Create live performances, interactive installations, and music visualizations by synchronously composing servos, lighting, and projection. [duration.cc](http://www.duration.cc/). This time Duration help you to plan your color changes.
+* Processing is a programming language, development environment, and online community. Java base. This time processing helps you to transform data to controller broad.
+* Arduino is an open-source electronics platform based on easy-to-use hardware and software. It's intended for anyone making interactive projects. This time arduino helps you control LED Strip.
 
 Installation
 ===============
-* Install Duration
-* Install Processing
-* Install Arduino
-* update Arduino Source Code
-* wiring up
-* run processing project
-* run duration project
+1. Install Duration
+2.  Install Processing
+3. Install Arduino
+4. update Arduino Source Code
+5. wiring up
+6. run processing project
+7. run duration project
 
 Duration 
 ===============
