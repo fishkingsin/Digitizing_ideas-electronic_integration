@@ -13,7 +13,7 @@ This repo is simple demostarte a concept of digital media and electronic integra
 Installation
 ===============
 1. Install Duration
-2.  Install Processing
+2. Install Processing
 3. Install Arduino
 4. update Arduino Source Code
 5. wiring up
@@ -32,7 +32,7 @@ Arduino
 ===============
 http://arduino.cc/en/Main/Software
 
-*Arduino Installation*
+**Arduino Installation**
 
 http://arduino.cc/en/Guide/Windows#toc4
 
