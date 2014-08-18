@@ -32,7 +32,9 @@ Wiring
 ===============
 http://www.seeedstudio.com/wiki/Grove_-_LED_Strip_Driver
 
-
+- PIN 2 -> CLK
+- PIN 3 -> DIO
+- GND -> GND
 
 Processing Project 
 ===============
