@@ -30,13 +30,13 @@ const int kProtocolHeaderFirstByte = 0xBA;
 const int kProtocolHeaderSecondByte = 0xBE;
 
 const int kProtocolHeaderLength = 2;
-const int kProtocolBodyLength = 12;
+const int kProtocolBodyLength = 6;
 const int kProtocolChecksumLength = 1;
 
 // Buffers and state
 
 bool appearToHaveValidMessage;
-byte receivedMessage[12];
+byte receivedMessage[kProtocolBodyLength];
 
 void setup() {
   // Open serial communications and wait for port to open:
@@ -70,6 +70,10 @@ void loop() {
           availableBytes = Serial.available();
       }
     }
+    else
+    {
+       Serial.println("FAIL");
+    }
   }
   
   if (availableBytes >= (kProtocolBodyLength + kProtocolChecksumLength) && appearToHaveValidMessage) {
@@ -92,13 +96,11 @@ void loop() {
       Driver.SetColor(receivedMessage[3], receivedMessage[4], receivedMessage[5]);
       Driver.end();
       
-      Serial.print("OK");
-      Serial.write(byte(10));
+      Serial.println("OK");
       
     } else {
       
-      Serial.print("FAIL");
-//      Serial.write(byte(10));
+      Serial.println("FAIL");
     }
     
     appearToHaveValidMessage = false;
