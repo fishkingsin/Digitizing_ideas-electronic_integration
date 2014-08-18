@@ -27,6 +27,8 @@ Arduino
 ===============
 http://arduino.cc/en/Main/Software
 
+*Arduino Installation*
+http://arduino.cc/en/Guide/Windows#toc4
 
 Wiring 
 ===============
