@@ -30,7 +30,7 @@ const int kProtocolHeaderFirstByte = 0xBA;
 const int kProtocolHeaderSecondByte = 0xBE;
 
 const int kProtocolHeaderLength = 2;
-const int kProtocolBodyLength = 6;
+const int kProtocolBodyLength = 12;
 const int kProtocolChecksumLength = 1;
 
 // Buffers and state
@@ -92,8 +92,12 @@ void loop() {
       // Hooray! Push the values to the output pins.
       
       Driver.begin();
-      Driver.SetColor(receivedMessage[0], receivedMessage[1] , receivedMessage[2]);
-      Driver.SetColor(receivedMessage[3], receivedMessage[4], receivedMessage[5]);
+      
+      for(int i = 0 ; i < 4 ; i++)
+      {
+        int index = i*3;
+        Driver.SetColor(receivedMessage[index], receivedMessage[index+1] , receivedMessage[index+2]);
+      }
       Driver.end();
       
       Serial.println("OK");
