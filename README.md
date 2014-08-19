@@ -62,8 +62,11 @@ Duration Project
 
 launch Duration
 
+![launch Duration](screen_06.png)
+
 "Open Project"->"path_to"/Digitizing_ideas-electronic_integration/Duration/SCM_OWeek_DurationProject->open
 
+![Open Project](screen_07.png)
 
 Node Project
 ===============
