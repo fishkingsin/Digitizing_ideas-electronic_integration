@@ -9,6 +9,7 @@ import oscP5.*;
 import netP5.*;
 
 Serial myPort;  // Create object from Serial class
+SerialSelector ss;
 OscP5 oscP5;
 
 byte kProtocolHeaderFirstByte = (byte)0xBA;
@@ -24,12 +25,13 @@ void setup() {
   {
     channels[i] = new int[kChannelBytes];
   }
-  for (String p : Serial.list ()) {
-    println(p);
-    if (p.startsWith("/dev/tty.usb") || p.startsWith("COM")) {
-      myPort = new Serial(this, p, 57600);
-    }
-  }
+//  for (String p : Serial.list ()) {
+//    println(p);
+//    if (p.startsWith("/dev/tty.usb") || p.startsWith("COM")) {
+//      myPort = new Serial(this, p, 57600);
+//    }
+//  }
+  ss = new SerialSelector();
 
   /* start oscP5, listening for incoming messages at port 12000 */
   oscP5 = new OscP5(this, 12345);
@@ -46,14 +48,20 @@ void setup() {
 
 void draw() {
   background(0);
-    if ( myPort.available() > 0) {  // If data is available,
-   char val = (char)myPort.read();         // read it and store it in val
-    print(val);
-  }
+//    if ( myPort.available() > 0) {  // If data is available,
+//   char val = (char)myPort.read();         // read it and store it in val
+//    print(val);
+//  }
   for(int i = 0 ; i < kNumChannel ; i++)
   {
     fill((int)channels[i][0],(int)channels[i][1],(int)channels[i][2]);
     rect(0,i*(height/kNumChannel),width,(i+1)*(height/kNumChannel));
+  }
+  if(ss != null && ss.m_chosen) {
+    ss.m_chosen = false;
+    myPort = new Serial(this, ss.m_port, 57600);
+//    bt = new BlinkyTape(this, ss.m_port, numberOfLEDs);
+    ss = null;
   }
 }
 
@@ -91,7 +99,7 @@ void oscEvent(OscMessage theOscMessage) {
   //checksum lazy way
   for (int i = 2; i < 14; i++)
       b[14] ^= b[i];
-  myPort.write(b );
+  if(myPort!=null)myPort.write(b );
   /* print the address pattern and the typetag of the received OscMessage */
 //  print("### received an osc message.");
 //  print(" addrpattern: "+theOscMessage.addrPattern());
