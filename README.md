@@ -36,13 +36,6 @@ http://arduino.cc/en/Main/Software
 
 http://arduino.cc/en/Guide/Windows#toc4
 
-***wiring***
-
-* arduino to LED Strip Driver ![arduino to LED Strip Driver](screen_01.JPG)
-* LED Strip Driver to LED Strip Driver![LED Strip Driver to LED Strip Driver](screen_03.JPG)
-* LED Strip Driver to LED Strip ![LED Strip Driver to LED Strip ](screen_04.JPG)
-* Power Source to LED Strip Driver![Power Source to LED Strip Driver](screen_05.JPG)
-
 Wiring 
 ===============
 http://www.seeedstudio.com/wiki/Grove_-_LED_Strip_Driver
@@ -50,6 +43,11 @@ http://www.seeedstudio.com/wiki/Grove_-_LED_Strip_Driver
 - PIN 2 -> CLK
 - PIN 3 -> DIO
 - GND -> GND
+
+* ![arduino to LED Strip Driver](screen_01.JPG)
+* ![LED Strip Driver to LED Strip Driver](screen_03.JPG)
+* ![LED Strip Driver to LED Strip ](screen_04.JPG)
+* ![Power Source to LED Strip Driver](screen_05.JPG)
 
 Processing Project 
 ===============
@@ -65,3 +63,14 @@ Duration Project
 launch Duration
 
 "Open Project"->"path_to"/Digitizing_ideas-electronic_integration/Duration/SCM_OWeek_DurationProject->open
+
+
+Node Project
+===============
+
+
+[OSC to Websocket ](Node/oscToWebsocketBridge)
+
+**Video Demo**
+
+[![Demo](https://i.vimeocdn.com/video/485993848_295x166.jpg)](https://vimeo.com/103685129/)
