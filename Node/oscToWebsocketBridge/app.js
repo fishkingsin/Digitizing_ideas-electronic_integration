@@ -3,15 +3,15 @@
 var WebSocket = require('./node_modules/faye-websocket/lib/faye/websocket');
 
 var fs        = require('fs'),
-    http      = require('http'),
-    https     = require('https'),
-    qs		  = require('querystring'),
-    url		  = require('url');
+http      = require('http'),
+https     = require('https'),
+qs		  = require('querystring'),
+url		  = require('url');
 var debug="development";
 //input parameters
 var pos = process.argv.indexOf("-port")
 var port   = (pos != -1 && (process.argv.length > pos + 1) ? process.argv[pos+1] : 12344);
-    secure = process.argv.indexOf("-ssl") != -1;
+secure = process.argv.indexOf("-ssl") != -1;
 var verbose = (process.argv.indexOf("-v") != -1 ? true : false);
 log("verbose mode ON");
 
@@ -59,8 +59,8 @@ var BroadcastServer = {
 		for(var i in BroadcastServer.clients)
 			if (BroadcastServer.clients[i].user_id != skip_id)
 				BroadcastServer.clients[i].send(data);
-	}
-};
+		}
+	};
 
 // OSC SERVER **********************************************
 var inport, osc, sock, udp;
@@ -69,14 +69,31 @@ osc = require('osc-min');
 
 udp = require("dgram");
 sock = udp.createSocket("udp4", function(msg, rinfo) {
-  var error;
-  try {
+	var error;
+	try {
   	//send to all socket
-  	BroadcastServer.sendToAll( JSON.stringify(osc.fromBuffer(msg)) );
-    return console.log(osc.fromBuffer(msg));
+  	var jsonVal = osc.fromBuffer(msg);
+  	var channelIndex = 0;
+  	for(var i = 0 ; i < jsonVal['elements'].length ; i++)
+  	{
+  		var element = jsonVal['elements'][i];
+  		// log(element);
+  		if(element['address']=='/channel'+channelIndex)
+  		{
+  			channelIndex++;
+  			var args = element['args'];
+  			// log("r:"+args[0]['value']);
+  			// log("g:"+args[1]['value']);
+  			// log("b:"+args[2]['value']);
+  			
+  		}
+  	}
+
+  	BroadcastServer.sendToAll( JSON.stringify(jsonVal) );
+  	// return console.log(jsonVal);
   } catch (_error) {
-    error = _error;
-    return console.log("invalid OSC packet");
+  	error = _error;
+  	return console.log("invalid OSC packet");
   }
 });
 // so let's start to listen on OSC_PORT
@@ -106,10 +123,10 @@ var staticHandler = function(request, response)
 		// else
 		// 	response.write( data );
 		// response.end();
-        response.writeHeader(200, {"Content-Type": "text/html"});  
-        response.write(data);  
-        response.end();  
-    	
+		response.writeHeader(200, {"Content-Type": "text/html"});  
+		response.write(data);  
+		response.end();  
+
 	}
 	if(path=="/")
 	{
@@ -134,11 +151,11 @@ BroadcastServer.init();
 
 //create the server (if it is SSL then add the cripto keys)
 var server = secure
-           ? https.createServer({
-               key:  fs.readFileSync(__dirname + '/../spec/server.key'),
-               cert: fs.readFileSync(__dirname + '/../spec/server.crt')
-             })
-           : http.createServer();
+? https.createServer({
+	key:  fs.readFileSync(__dirname + '/../spec/server.key'),
+	cert: fs.readFileSync(__dirname + '/../spec/server.crt')
+})
+: http.createServer();
 server.addListener('request', staticHandler); //incoming http connections
 server.addListener('upgrade', connectionHandler); //incomming websocket connections
 
@@ -159,30 +176,31 @@ var SerialPort = require("serialport").SerialPort
 
 var serialPort = require("serialport");
 serialPort.list(function (err, ports) {
-  ports.forEach(function(port) {
-    
-    if(port.comName.indexOf("/dev/cu.usbserial") > -1)
-  	{
-  		serialPort = new SerialPort(port.comName, {baudrate: 57600},false);
-	    serialPort.open(function (error) {
-		  if ( error ) {
-		    log('failed to open: '+error);
-		  } else {
-		    log('open');
-		    writeSerial();
-		  }
-		});
-  		return;
-  	}
-  });
+	ports.forEach(function(port) {
+
+		if(port.comName.indexOf("/dev/cu.usbserial") > -1)
+		{
+			serialPort = new SerialPort(port.comName, {baudrate: 57600},false);
+
+			serialPort.open(function (error) {
+				if ( error ) {
+					log('failed to open: '+error);
+				} else {
+					log('open');
+					writeSerial();
+				}
+			});
+			return;
+		}
+	});
 });
 
 function readSerial ()
 {
 	serialPort.on('data', function(data) {
-    	log('data received: ' + data);
-    	writeSerial ();
-  	});
+		log('data received: ' + data);
+		writeSerial ();
+	});
 }
 function writeSerial ()
 {
@@ -192,16 +210,16 @@ function writeSerial ()
 		0x00]);
 	var calculatedChecksum = 0;
 	for (var i = 2; i < kProtocolBodyLength; i++) {
-      calculatedChecksum ^= data[i];
-    }
-    data[8]=calculatedChecksum;
-    log(data[8]);
+		calculatedChecksum ^= data[i];
+	}
+	data[8]=calculatedChecksum;
+	log(data[8]);
 	serialPort.write(data, function(err, results) {
-    	log('err ' + err);
-    	log('results ' + results);
+		log('err ' + err);
+		log('results ' + results);
     	// readSerial ();
     	// writeSerial ()
-  	});
+    });
 
 }
 
@@ -209,7 +227,7 @@ function writeSerial ()
 
 function rgb2hsb(r,g,b)
 {
- var hue, saturation, brightness;
+	var hue, saturation, brightness;
  // if (hsbvals == null) {
  //   hsbvals = new float[3];
  // }
@@ -220,24 +238,24 @@ function rgb2hsb(r,g,b)
 
  brightness = ( cmax) / 255;
  if (cmax != 0)
-   saturation = ( (cmax - cmin)) / ( cmax);
+ 	saturation = ( (cmax - cmin)) / ( cmax);
  else
-   saturation = 0;
+ 	saturation = 0;
  if (saturation == 0)
-   hue = 0;
+ 	hue = 0;
  else {
-   var redc = ( (cmax - r)) / ( (cmax - cmin));
-   var greenc = ( (cmax - g)) / ( (cmax - cmin));
-   var bluec = ( (cmax - b)) / ( (cmax - cmin));
-   if (r == cmax)
-     hue = bluec - greenc;
-   else if (g == cmax)
-     hue = 2 + redc - bluec;
-   else
-     hue = 4 + greenc - redc;
-   hue = hue / 6;
-   if (hue < 0)
-     hue = hue + 1;
+ 	var redc = ( (cmax - r)) / ( (cmax - cmin));
+ 	var greenc = ( (cmax - g)) / ( (cmax - cmin));
+ 	var bluec = ( (cmax - b)) / ( (cmax - cmin));
+ 	if (r == cmax)
+ 		hue = bluec - greenc;
+ 	else if (g == cmax)
+ 		hue = 2 + redc - bluec;
+ 	else
+ 		hue = 4 + greenc - redc;
+ 	hue = hue / 6;
+ 	if (hue < 0)
+ 		hue = hue + 1;
  }
  var hsbvals = new Array(0,0,0);
  hsbvals[0] = float2int(hue*360);
@@ -247,7 +265,7 @@ function rgb2hsb(r,g,b)
 
 }
 function float2int (value) {
-    return value | 0;
+	return value | 0;
 }
 
 function log(msg)
