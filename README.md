@@ -10,6 +10,8 @@ This repo is simple demostarte a concept of digital media and electronic integra
 * Processing is a programming language, development environment, and online community. Java base. This time processing helps you to transform data to controller broad.
 * Arduino is an open-source electronics platform based on easy-to-use hardware and software. It's intended for anyone making interactive projects. This time arduino helps you control LED Strip.
 
+
+
 Installation
 ===============
 1. Install Duration
@@ -68,6 +70,16 @@ launch Duration
 
 ![Open Project](screen_07.png)
 
+**enssential track name**
+
+    * channel0
+    * channel1
+    * audio
+
+more detail goges to 
+
+[![Duration] (https://i.vimeocdn.com/video/433198988.webp?mw=960)](https://vimeo.com/59654979)
+
 Node Project
 ===============
 
@@ -76,4 +88,4 @@ Node Project
 
 **Video Demo**
 
-[![Demo](https://i.vimeocdn.com/video/485993848_295x166.jpg)](https://vimeo.com/103685129/)
+[![Demo](https://i.vimeocdn.com/video/485993848.webp?mw=960)](https://vimeo.com/103685129/)
