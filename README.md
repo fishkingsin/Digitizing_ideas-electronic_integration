@@ -38,6 +38,11 @@ http://arduino.cc/en/Main/Software
 
 http://arduino.cc/en/Guide/Windows#toc4
 
+Node
+==============
+
+http://nodejs.org/download/
+
 Wiring 
 ===============
 http://www.seeedstudio.com/wiki/Grove_-_LED_Strip_Driver
