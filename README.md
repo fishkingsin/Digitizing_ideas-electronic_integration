@@ -36,6 +36,13 @@ http://arduino.cc/en/Main/Software
 
 http://arduino.cc/en/Guide/Windows#toc4
 
+***wiring***
+
+* ![arduino to LED Strip Driver](screen_01.JPG)
+* ![LED Strip Driver to LED Strip Driver](screen_03.JPG)
+* ![LED Strip Driver to LED Strip ](screen_04.JPG)
+* ![Power Source to LED Strip Driver](screen_05.JPG)
+
 Wiring 
 ===============
 http://www.seeedstudio.com/wiki/Grove_-_LED_Strip_Driver
