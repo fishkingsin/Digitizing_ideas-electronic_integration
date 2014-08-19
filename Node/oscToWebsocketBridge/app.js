@@ -192,7 +192,7 @@ var serialPort = require("serialport");
 serialPort.list(function (err, ports) {
 	ports.forEach(function(port) {
 
-		if(port.comName.indexOf("/dev/cu.usbserial") > -1)
+		if(port.comName.indexOf("/dev/cu.usbserial") > -1 || port.comName.indexOf("COM") > -1)
 		{
 			serialPort = new SerialPort(port.comName, {baudrate: 57600},false);
 

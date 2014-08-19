@@ -26,7 +26,7 @@ void setup() {
   }
   for (String p : Serial.list ()) {
     println(p);
-    if (p.startsWith("/dev/tty.usb")) {
+    if (p.startsWith("/dev/tty.usb") || p.startsWith("COM")) {
       myPort = new Serial(this, p, 57600);
     }
   }
