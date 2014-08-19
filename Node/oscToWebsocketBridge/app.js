@@ -6,7 +6,9 @@ var fs        = require('fs'),
 http      = require('http'),
 https     = require('https'),
 qs		  = require('querystring'),
-url		  = require('url');
+url		  = require('url'),
+jQuery		= require('jquery');
+
 var debug="development";
 //input parameters
 var pos = process.argv.indexOf("-port")
@@ -16,6 +18,21 @@ var verbose = (process.argv.indexOf("-v") != -1 ? true : false);
 log("verbose mode ON");
 
 var OSC_PORT = port + 1;
+//serial
+var kProtocolHeaderFirstByte = 0xBA;
+var kProtocolHeaderSecondByte = 0xBE;
+var kProtocolHeaderLength = 2;
+var kProtocolBodyLength = 12;
+var kProtocolChecksumLength = 1;
+var kNumChannel = 4;
+var kChannelBytes = 3;
+var byteDataLength = kProtocolHeaderLength+kProtocolBodyLength+kProtocolChecksumLength;
+var channels=new Array(kNumChannel);
+for(var i = 0 ; i < kNumChannel ; i++)
+{
+	channels[i] = new Array(kChannelBytes);
+	memset(channels[i],0);
+}
 
 //Server 
 var BroadcastServer = {
@@ -80,15 +97,17 @@ sock = udp.createSocket("udp4", function(msg, rinfo) {
   		// log(element);
   		if(element['address']=='/channel'+channelIndex)
   		{
-  			channelIndex++;
+  			
   			var args = element['args'];
-  			// log("r:"+args[0]['value']);
-  			// log("g:"+args[1]['value']);
-  			// log("b:"+args[2]['value']);
+  			for(var j = 0 ; j < kChannelBytes ; j++)
+  			{
+  				channels[channelIndex][j] = args[j]['value'];
+  			}
+  			channelIndex++;
   			
   		}
   	}
-
+writeSerial(channels);
   	BroadcastServer.sendToAll( JSON.stringify(jsonVal) );
   	// return console.log(jsonVal);
   } catch (_error) {
@@ -165,11 +184,6 @@ server.listen(port);
 
 
 //Serial
-var kProtocolHeaderFirstByte = 0xBA;
-var kProtocolHeaderSecondByte = 0xBE;
-var kProtocolBodyLength = 6;
-var kNumChannel = 4;
-var kChannelBytes = 3;
 var SerialPort = require("serialport").SerialPort
 
 
@@ -187,7 +201,7 @@ serialPort.list(function (err, ports) {
 					log('failed to open: '+error);
 				} else {
 					log('open');
-					writeSerial();
+					writeSerial([kProtocolHeaderFirstByte,kProtocolHeaderSecondByte ,0,0,0,0,0,0,0,0,0,0,0]);
 				}
 			});
 			return;
@@ -202,21 +216,48 @@ function readSerial ()
 		writeSerial ();
 	});
 }
-function writeSerial ()
+function memset( object, value )
 {
-	var data = new Buffer([kProtocolHeaderFirstByte,kProtocolHeaderSecondByte,
-		0xFF,0xFF,0xFF, //first color
-		0xFF,0xFF,0xFF, // second color
-		0x00]);
+   	for ( var i in object ) object[Number(i)]=value;
+}
+function writeSerial (_channels)
+{
+	var data = new Buffer(byteDataLength);
+	// var daraArray = new Array(byteDataLength);
+	// memset(daraArray,0);
+
+	// byteDataLength = kProtocolHeaderLength+kProtocolBodyLength+kProtocolChecksumLength;
+	var index = kProtocolHeaderLength;
+	for(var i = 0 ; i < kNumChannel ; i++)
+	{
+		for(var j = 0 ; j < kChannelBytes ; j++)
+		{
+			data[index] = _channels[i][j];
+			index++;
+		}
+	}
+	data[0] = kProtocolHeaderFirstByte;
+	data[1] = kProtocolHeaderSecondByte;
+	// var data = new Buffer([kProtocolHeaderFirstByte,kProtocolHeaderSecondByte,
+	// 	0xFF,0xFF,0xFF, //first color
+	// 	0xFF,0xFF,0xFF, // second color
+	// 	0xFF,0xFF,0xFF, // third color
+	// 	0xFF,0xFF,0xFF, // fourth color
+	// 	0x00]);
 	var calculatedChecksum = 0;
-	for (var i = 2; i < kProtocolBodyLength; i++) {
+	for (var i = kProtocolHeaderLength; i < kProtocolBodyLength; i++) {
 		calculatedChecksum ^= data[i];
 	}
-	data[8]=calculatedChecksum;
-	log(data[8]);
+	data[byteDataLength-1]=calculatedChecksum;
+	dir(data);
+
+	
 	serialPort.write(data, function(err, results) {
-		log('err ' + err);
-		log('results ' + results);
+		if(err)
+		{
+			log('err ' + err);
+			log('results ' + results);
+		}
     	// readSerial ();
     	// writeSerial ()
     });
