@@ -2,12 +2,15 @@
   "name": "oscBridge",
   "description": "bridging osc to web socket",
   "author": "James Kong <fishkingsin@gmail.com>",
+  "repository":"https://github.com/fishkingsin/Digitizing_ideas-electronic_integration",
   "private": false,
+  "version": "0.1.0beta",
   "dependencies": {
     "express": "3.x",
-    "faye-websocket": "x.x",
-    "serialport": "x.x",
-    "osc-min":"x.x",
-    "jquery":"x.x"
+    "faye-websocket": "",
+    "serialport": "",
+    "osc-min":"",
+    "jquery":""
+    
   }
 }
