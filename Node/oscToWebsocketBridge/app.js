@@ -184,11 +184,6 @@ server.listen(port);
 
 
 //Serial
-
-var SerialPort = require("serialport").SerialPort
-
-
-
 var serialPort = require("serialport");
 
 try{
@@ -211,6 +206,7 @@ try{
 				return;
 			}
 		});
+		log('not avaliable port found');
 	});
 }
 catch(err)
