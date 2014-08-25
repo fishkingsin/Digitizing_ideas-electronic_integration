@@ -28,6 +28,7 @@ var kNumChannel = 4;
 var kChannelBytes = 3;
 var byteDataLength = kProtocolHeaderLength+kProtocolBodyLength+kProtocolChecksumLength;
 var channels=new Array(kNumChannel);
+var isSerialOpen = false;
 for(var i = 0 ; i < kNumChannel ; i++)
 {
 	channels[i] = new Array(kChannelBytes);
@@ -200,6 +201,7 @@ try{
 						log('failed to open: '+error);
 					} else {
 						log('open');
+						isSerialOpen = true;
 						writeSerial([kProtocolHeaderFirstByte,kProtocolHeaderSecondByte ,0,0,0,0,0,0,0,0,0,0,0]);
 					}
 				});
@@ -215,7 +217,7 @@ catch(err)
 }
 function readSerial ()
 {
-	if(serialPort!=null)
+	if(isSerialOpen)
 	{
 	serialPort.on('data', function(data) {
 		log('data received: ' + data);
@@ -225,7 +227,7 @@ function readSerial ()
 }
 function writeSerial (_channels)
 {
-	if(serialPort!=null)
+	if(isSerialOpen)
 	{
 		var data = new Buffer(byteDataLength);
 		// var daraArray = new Array(byteDataLength);
