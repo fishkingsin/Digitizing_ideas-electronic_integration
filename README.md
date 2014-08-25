@@ -22,6 +22,10 @@ Installation
 6. run processing project
 7. run duration project
 
+Tutorial
+===============
+go to [Tutorial](https://github.com/fishkingsin/Digitizing_ideas-electronic_integration/wiki/Tutorial) for more information
+
 Duration 
 ===============
 http://www.duration.cc/
