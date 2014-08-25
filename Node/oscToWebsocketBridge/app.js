@@ -107,12 +107,12 @@ sock = udp.createSocket("udp4", function(msg, rinfo) {
   			
   		}
   	}
-writeSerial(channels);
+	writeSerial(channels);
   	BroadcastServer.sendToAll( JSON.stringify(jsonVal) );
   	// return console.log(jsonVal);
   } catch (_error) {
   	error = _error;
-  	return console.log("invalid OSC packet");
+  	return console.log("invalid OSC packet"+_error);
   }
 });
 // so let's start to listen on OSC_PORT
@@ -184,86 +184,98 @@ server.listen(port);
 
 
 //Serial
+
 var SerialPort = require("serialport").SerialPort
 
 
 
 var serialPort = require("serialport");
-serialPort.list(function (err, ports) {
-	ports.forEach(function(port) {
 
-		if(port.comName.indexOf("/dev/cu.usbserial") > -1 || port.comName.indexOf("COM") > -1)
-		{
-			serialPort = new SerialPort(port.comName, {baudrate: 57600},false);
+try{
+	serialPort.list(function (err, ports) {
+		log(err);
+		ports.forEach(function(port) {
 
-			serialPort.open(function (error) {
-				if ( error ) {
-					log('failed to open: '+error);
-				} else {
-					log('open');
-					writeSerial([kProtocolHeaderFirstByte,kProtocolHeaderSecondByte ,0,0,0,0,0,0,0,0,0,0,0]);
-				}
-			});
-			return;
-		}
+			if(port.comName.indexOf("/dev/cu.wchusbserial") > -1 || port.comName.indexOf("/dev/cu.usbserial") > -1 || port.comName.indexOf("COM") > -1)
+			{
+				serialPort = new SerialPort(port.comName, {baudrate: 57600},false);
+
+				serialPort.open(function (error) {
+					if ( error ) {
+						log('failed to open: '+error);
+					} else {
+						log('open');
+						writeSerial([kProtocolHeaderFirstByte,kProtocolHeaderSecondByte ,0,0,0,0,0,0,0,0,0,0,0]);
+					}
+				});
+				return;
+			}
+		});
 	});
-});
-
+}
+catch(err)
+{
+	log(err);
+}
 function readSerial ()
 {
+	if(serialPort!=null)
+	{
 	serialPort.on('data', function(data) {
 		log('data received: ' + data);
 		writeSerial ();
 	});
+	}
+}
+function writeSerial (_channels)
+{
+	if(serialPort!=null)
+	{
+		var data = new Buffer(byteDataLength);
+		// var daraArray = new Array(byteDataLength);
+		// memset(daraArray,0);
+
+		// byteDataLength = kProtocolHeaderLength+kProtocolBodyLength+kProtocolChecksumLength;
+		var index = kProtocolHeaderLength;
+		for(var i = 0 ; i < kNumChannel ; i++)
+		{
+			for(var j = 0 ; j < kChannelBytes ; j++)
+			{
+				data[index] = _channels[i][j];
+				index++;
+			}
+		}
+		data[0] = kProtocolHeaderFirstByte;
+		data[1] = kProtocolHeaderSecondByte;
+		// var data = new Buffer([kProtocolHeaderFirstByte,kProtocolHeaderSecondByte,
+		// 	0xFF,0xFF,0xFF, //first color
+		// 	0xFF,0xFF,0xFF, // second color
+		// 	0xFF,0xFF,0xFF, // third color
+		// 	0xFF,0xFF,0xFF, // fourth color
+		// 	0x00]);
+		var calculatedChecksum = 0;
+		for (var i = kProtocolHeaderLength; i < kProtocolBodyLength; i++) {
+			calculatedChecksum ^= data[i];
+		}
+		data[byteDataLength-1]=calculatedChecksum;
+		dir(data);
+
+		
+		serialPort.write(data, function(err, results) {
+			if(err)
+			{
+				log('err ' + err);
+				log('results ' + results);
+			}
+	    	// readSerial ();
+	    	// writeSerial ()
+	    });
+	}
 }
 function memset( object, value )
 {
    	for ( var i in object ) object[Number(i)]=value;
 }
-function writeSerial (_channels)
-{
-	var data = new Buffer(byteDataLength);
-	// var daraArray = new Array(byteDataLength);
-	// memset(daraArray,0);
-
-	// byteDataLength = kProtocolHeaderLength+kProtocolBodyLength+kProtocolChecksumLength;
-	var index = kProtocolHeaderLength;
-	for(var i = 0 ; i < kNumChannel ; i++)
-	{
-		for(var j = 0 ; j < kChannelBytes ; j++)
-		{
-			data[index] = _channels[i][j];
-			index++;
-		}
-	}
-	data[0] = kProtocolHeaderFirstByte;
-	data[1] = kProtocolHeaderSecondByte;
-	// var data = new Buffer([kProtocolHeaderFirstByte,kProtocolHeaderSecondByte,
-	// 	0xFF,0xFF,0xFF, //first color
-	// 	0xFF,0xFF,0xFF, // second color
-	// 	0xFF,0xFF,0xFF, // third color
-	// 	0xFF,0xFF,0xFF, // fourth color
-	// 	0x00]);
-	var calculatedChecksum = 0;
-	for (var i = kProtocolHeaderLength; i < kProtocolBodyLength; i++) {
-		calculatedChecksum ^= data[i];
-	}
-	data[byteDataLength-1]=calculatedChecksum;
-	dir(data);
-
-	
-	serialPort.write(data, function(err, results) {
-		if(err)
-		{
-			log('err ' + err);
-			log('results ' + results);
-		}
-    	// readSerial ();
-    	// writeSerial ()
-    });
-
-}
-
 //helper function
 
 function rgb2hsb(r,g,b)
