@@ -185,90 +185,90 @@ server.listen(port);
 
 
 //Serial
-var serialPort = require("serialport");
+// var serialPort = require("serialport");
 
-try{
-	serialPort.list(function (err, ports) {
-		log(err);
-		ports.forEach(function(port) {
+// try{
+// 	serialPort.list(function (err, ports) {
+// 		log(err);
+// 		ports.forEach(function(port) {
 
-			if(port.comName.indexOf("/dev/cu.wchusbserial") > -1 || port.comName.indexOf("/dev/cu.usbserial") > -1 || port.comName.indexOf("COM") > -1)
-			{
-				serialPort = new SerialPort(port.comName, {baudrate: 57600},false);
+// 			if(port.comName.indexOf("/dev/cu.wchusbserial") > -1 || port.comName.indexOf("/dev/cu.usbserial") > -1 || port.comName.indexOf("COM") > -1)
+// 			{
+// 				serialPort = new SerialPort(port.comName, {baudrate: 57600},false);
 
-				serialPort.open(function (error) {
-					if ( error ) {
-						log('failed to open: '+error);
-					} else {
-						log('open');
-						isSerialOpen = true;
-						writeSerial([kProtocolHeaderFirstByte,kProtocolHeaderSecondByte ,0,0,0,0,0,0,0,0,0,0,0]);
-					}
-				});
-				return;
-			}
-		});
-		log('not avaliable port found');
-	});
-}
-catch(err)
-{
-	log(err);
-}
+// 				serialPort.open(function (error) {
+// 					if ( error ) {
+// 						log('failed to open: '+error);
+// 					} else {
+// 						log('open');
+// 						isSerialOpen = true;
+// 						writeSerial([kProtocolHeaderFirstByte,kProtocolHeaderSecondByte ,0,0,0,0,0,0,0,0,0,0,0]);
+// 					}
+// 				});
+// 				return;
+// 			}
+// 		});
+// 		log('not avaliable port found');
+// 	});
+// }
+// catch(err)
+// {
+// 	log(err);
+// }
 function readSerial ()
 {
-	if(isSerialOpen)
-	{
-	serialPort.on('data', function(data) {
-		log('data received: ' + data);
-		writeSerial ();
-	});
-	}
+	// if(isSerialOpen)
+	// {
+	// serialPort.on('data', function(data) {
+	// 	log('data received: ' + data);
+	// 	writeSerial ();
+	// });
+	// }
 }
 function writeSerial (_channels)
 {
-	if(isSerialOpen)
-	{
-		var data = new Buffer(byteDataLength);
-		// var daraArray = new Array(byteDataLength);
-		// memset(daraArray,0);
+	// if(isSerialOpen)
+	// {
+	// 	var data = new Buffer(byteDataLength);
+	// 	// var daraArray = new Array(byteDataLength);
+	// 	// memset(daraArray,0);
 
-		// byteDataLength = kProtocolHeaderLength+kProtocolBodyLength+kProtocolChecksumLength;
-		var index = kProtocolHeaderLength;
-		for(var i = 0 ; i < kNumChannel ; i++)
-		{
-			for(var j = 0 ; j < kChannelBytes ; j++)
-			{
-				data[index] = _channels[i][j];
-				index++;
-			}
-		}
-		data[0] = kProtocolHeaderFirstByte;
-		data[1] = kProtocolHeaderSecondByte;
-		// var data = new Buffer([kProtocolHeaderFirstByte,kProtocolHeaderSecondByte,
-		// 	0xFF,0xFF,0xFF, //first color
-		// 	0xFF,0xFF,0xFF, // second color
-		// 	0xFF,0xFF,0xFF, // third color
-		// 	0xFF,0xFF,0xFF, // fourth color
-		// 	0x00]);
-		var calculatedChecksum = 0;
-		for (var i = kProtocolHeaderLength; i < kProtocolBodyLength; i++) {
-			calculatedChecksum ^= data[i];
-		}
-		data[byteDataLength-1]=calculatedChecksum;
-		dir(data);
+	// 	// byteDataLength = kProtocolHeaderLength+kProtocolBodyLength+kProtocolChecksumLength;
+	// 	var index = kProtocolHeaderLength;
+	// 	for(var i = 0 ; i < kNumChannel ; i++)
+	// 	{
+	// 		for(var j = 0 ; j < kChannelBytes ; j++)
+	// 		{
+	// 			data[index] = _channels[i][j];
+	// 			index++;
+	// 		}
+	// 	}
+	// 	data[0] = kProtocolHeaderFirstByte;
+	// 	data[1] = kProtocolHeaderSecondByte;
+	// 	// var data = new Buffer([kProtocolHeaderFirstByte,kProtocolHeaderSecondByte,
+	// 	// 	0xFF,0xFF,0xFF, //first color
+	// 	// 	0xFF,0xFF,0xFF, // second color
+	// 	// 	0xFF,0xFF,0xFF, // third color
+	// 	// 	0xFF,0xFF,0xFF, // fourth color
+	// 	// 	0x00]);
+	// 	var calculatedChecksum = 0;
+	// 	for (var i = kProtocolHeaderLength; i < kProtocolBodyLength; i++) {
+	// 		calculatedChecksum ^= data[i];
+	// 	}
+	// 	data[byteDataLength-1]=calculatedChecksum;
+	// 	dir(data);
 
 		
-		serialPort.write(data, function(err, results) {
-			if(err)
-			{
-				log('err ' + err);
-				log('results ' + results);
-			}
-	    	// readSerial ();
-	    	// writeSerial ()
-	    });
-	}
+	// 	serialPort.write(data, function(err, results) {
+	// 		if(err)
+	// 		{
+	// 			log('err ' + err);
+	// 			log('results ' + results);
+	// 		}
+	//     	// readSerial ();
+	//     	// writeSerial ()
+	//     });
+	// }
 }
 function memset( object, value )
 {
